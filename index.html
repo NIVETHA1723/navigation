@@ -1,81 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Fixed Navigation Menu</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sleek Fixed Nav</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    /* Reset & Base Styles */
+    /* Reset */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    body, html {
-      font-family: sans-serif;
+    body {
+      font-family: 'Poppins', sans-serif;
       scroll-behavior: smooth;
     }
 
     /* Navigation Styles */
-    #navbar {
+    nav {
       position: fixed;
       top: 0;
+      left: 0;
       width: 100%;
       background-color: transparent;
-      transition: background-color 0.3s ease;
-      padding: 15px 20px;
+      padding: 20px 40px;
       z-index: 1000;
-    }
-
-    #navbar.scrolled {
-      background-color: #333;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
-
-    #navbar ul {
-      list-style-type: none;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    nav.scrolled {
+      background-color: #111;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo {
+      font-size: 24px;
+      color: white;
+      font-weight: 600;
+    }
+
+    ul.nav-links {
+      list-style: none;
+      display: flex;
       gap: 30px;
     }
 
-    #navbar li a {
-      text-decoration: none;
+    ul.nav-links li a {
       color: white;
-      font-weight: bold;
-      padding: 8px 12px;
-      transition: color 0.3s, background-color 0.3s;
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      padding: 5px 0;
     }
 
-    #navbar li a:hover {
+    ul.nav-links li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: #FFD700;
+      transition: width 0.3s ease;
+    }
+
+    ul.nav-links li a:hover::after,
+    ul.nav-links li a.active::after {
+      width: 100%;
+    }
+
+    ul.nav-links li a.active {
       color: #FFD700;
-      background-color: rgba(255, 255, 255, 0.1);
-      border-radius: 4px;
     }
 
-    /* Section Content Styles */
+    /* Mobile nav */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      height: 3px;
+      width: 25px;
+      background: white;
+      margin: 4px 0;
+      transition: 0.3s;
+    }
+
+    @media (max-width: 768px) {
+      ul.nav-links {
+        position: absolute;
+        top: 70px;
+        left: -100%;
+        flex-direction: column;
+        background-color: #111;
+        width: 100%;
+        text-align: center;
+        transition: left 0.3s ease;
+        padding: 20px 0;
+      }
+
+      ul.nav-links.open {
+        left: 0;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    /* Sections */
     section {
       height: 100vh;
-      padding: 100px 20px 20px; /* offset for fixed nav */
-      background: #f4f4f4;
-      border-bottom: 1px solid #ccc;
+      padding: 120px 40px 40px;
+      background: #f0f0f0;
+      transition: background 0.3s;
     }
 
     section:nth-child(even) {
-      background: #e0e0e0;
+      background: #e2e2e2;
     }
 
     section h1 {
+      font-size: 2.5rem;
       margin-bottom: 10px;
+    }
+
+    section p {
+      font-size: 1.1rem;
     }
   </style>
 </head>
 <body>
 
   <nav id="navbar">
-    <ul>
-      <li><a href="#home">Home</a></li>
+    <div class="logo">MySite</div>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#home" class="active">Home</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#services">Services</a></li>
       <li><a href="#contact">Contact</a></li>
@@ -85,32 +157,58 @@
   <main>
     <section id="home">
       <h1>Home</h1>
-      <p>Welcome to the home section. Scroll down to see the nav change!</p>
+      <p>Welcome to our site. Enjoy the smooth experience.</p>
     </section>
     <section id="about">
       <h1>About</h1>
-      <p>This is the about section with some example content.</p>
+      <p>Learn more about us and what we do.</p>
     </section>
     <section id="services">
       <h1>Services</h1>
-      <p>Details about services offered go here.</p>
+      <p>We offer a range of digital solutions for your needs.</p>
     </section>
     <section id="contact">
       <h1>Contact</h1>
-      <p>Contact information and form would go here.</p>
+      <p>Reach out to us anytime — we're here to help.</p>
     </section>
   </main>
 
   <script>
-    // JavaScript for scroll effect
-    window.addEventListener("scroll", function () {
-      const navbar = document.getElementById("navbar");
-      if (window.scrollY > 50) {
-        navbar.classList.add("scrolled");
-      } else {
-        navbar.classList.remove("scrolled");
-      }
+    // Scroll effect
+    const navbar = document.getElementById("navbar");
+    window.addEventListener("scroll", () => {
+      navbar.classList.toggle("scrolled", window.scrollY > 50);
     });
+
+    // Mobile nav toggle
+    const hamburger = document.getElementById("hamburger");
+    const navLinks = document.getElementById("nav-links");
+    hamburger.addEventListener("click", () => {
+      navLinks.classList.toggle("open");
+    });
+
+    // Active link detection
+    const sections = document.querySelectorAll("section");
+    const links = document.querySelectorAll("nav ul li a");
+
+    const options = {
+      threshold: 0.5
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          links.forEach(link => {
+            link.classList.remove("active");
+            if (link.getAttribute("href").substring(1) === entry.target.id) {
+              link.classList.add("active");
+            }
+          });
+        }
+      });
+    }, options);
+
+    sections.forEach(section => observer.observe(section));
   </script>
 
 </body>
